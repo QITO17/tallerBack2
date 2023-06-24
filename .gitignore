@@ -1,0 +1,26 @@
+# Módulos y dependencias instaladas por npm
+/node_modules
+
+# Archivos generados por herramientas de construcción
+/build
+/dist
+
+# Archivos de configuración locales
+.env
+
+# Registro de errores y archivos de registro
+/error.log
+.log
+
+# Archivos de respaldo y temporales
+*.bak
+*.swp
+*.tmp
+
+# Carpetas específicas de IDE
+.vscode
+.idea
+
+# Archivo de bloqueo de proceso
+npm-debug.log
+yarn-error.log
