@@ -1,9 +1,10 @@
+require('dotenv').config();
 const { Model } = require('sequelize');
 const app = require('./app');
 const userRouter = require('./routes/userRouter');
 const repairRouter = require('./routes/repairRouter');
 
-const PORT = 3000;
+const PORT = 3000 || process.env.PORT ;
 
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/repairs', repairRouter);
