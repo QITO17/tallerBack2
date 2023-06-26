@@ -18,7 +18,7 @@ router
   //.use('/:id', userMiddleware.exisUser)
   .route('/:id')
   .get(userMiddleware.exisUser, userControllers.findOneUser)
-  .delete(userMiddleware.exisUser, userControllers.deleteOneUser)
-  .patch(userMiddleware.exisUser, userControllers.updateOneUser);
+  .delete(userMiddleware.exisUser, autMiddleware.protectAccountOwner, userControllers.deleteOneUser)
+  .patch(userMiddleware.exisUser, autMiddleware.protectAccountOwner, userControllers.updateOneUser);
 
 module.exports = router;

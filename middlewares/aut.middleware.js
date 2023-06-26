@@ -54,3 +54,13 @@ exports.restrictTo = (...roles) => {
     next();
   };
 };
+
+exports.protectAccountOwner = async (req, res, next) => {
+  const { user, sessionUser } = req;
+
+  if (user.id !== sessionUser.id) {
+    return next(new AppError('You do not own this account.', 401));
+  }
+
+ next();
+};

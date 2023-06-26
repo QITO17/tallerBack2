@@ -43,12 +43,20 @@ exports.findOneUser = async (req, res) => {
   });
 };
 
-exports.deleteOneUser = async (req, res) => {
-  const { status } = req.body;
+exports.deleteOneUser = async (req, res) => { 
 
   const user = req.user;
 
-  user.update({ status: 'desativado' });
+  const { id } = req.sessionUser;
+
+  if(user.id === id){
+    user.update({ status: 'desativado' });
+  }else{
+    res.status(400).json({
+      message: `No es posible eliminar el usuario con el id ${user.id} desde el usuario con el id ${id}`,
+      user,
+    });
+  }
 
   res.status(200).json({
     message: `Usuario cancelado exitosamente 😒☠☠`,
@@ -61,7 +69,16 @@ exports.updateOneUser = async (req, res) => {
 
   const user = req.user;
 
-  user.update({ name, email });
+  const { id } = req.sessionUser;
+
+  if(user.id === id){
+    user.update({ name, email });
+  }else{
+    res.status(400).json({
+      message: `No es posible actualizar el usuario con el id ${user.id} desde el usuario con el id ${id}`,
+      user,
+    });
+  }
 
   res.status(200).json({
     message: `Usuario completada exitosamente`,

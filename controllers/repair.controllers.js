@@ -7,6 +7,11 @@ exports.findRepairs = async (req, res) => {
     where: {
       status: 'pending',
     },
+    include:[
+      {
+        model:User,
+      }
+    ]
   });
 
   if (!repair) {
