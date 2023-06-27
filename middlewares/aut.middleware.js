@@ -2,6 +2,7 @@ const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/user.model');
+const AppError = require('../utils/appError');
 
 exports.protect = async (req, res, next) => {
   let token;
@@ -27,7 +28,7 @@ exports.protect = async (req, res, next) => {
   const user = await User.findOne({
     where: {
       id: decoded.id,
-      status: true,
+      status: 'available',
     },
   });
 

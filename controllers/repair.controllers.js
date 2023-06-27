@@ -38,7 +38,7 @@ exports.createRepairs = catchAsync(async (req, res, next) => {
 
   const user = await User.findAll({
     where: {
-      idUser,
+      id: idUser,
     },
   });
 
@@ -71,7 +71,6 @@ exports.completeRepairs = catchAsync(async (req, res, next) => {
   res.status(200).json({
     message: `Reparación completada exitosamente`,
     mesagge2: '😎🐱‍🏍🐱‍🐉 Att Arley Hurtado difruta tu moto 🏍🛵🏍',
-
   });
 });
 

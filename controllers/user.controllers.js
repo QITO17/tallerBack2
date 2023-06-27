@@ -18,20 +18,20 @@ exports.findUser = async (req, res) => {
 exports.createUser = async (req, res) => {
   const { name, email, password, role } = req.body;
 
-  const token = await generateJWT(user.id);
-
   const user = await User.create({
     name,
     email,
     password,
     role,
-    token,
   });
+
+  const token = await generateJWT(user.id);
 
   return res.status(200).json({
     message: 'Usuario creado exitosamente 😁😀',
     mesagge2: 'Gracias por escogernos >:D 🚑🛒🚘🏍🛵🚲',
     user,
+    token,
   });
 };
 
@@ -43,15 +43,14 @@ exports.findOneUser = async (req, res) => {
   });
 };
 
-exports.deleteOneUser = async (req, res) => { 
-
+exports.deleteOneUser = async (req, res) => {
   const user = req.user;
 
   const { id } = req.sessionUser;
 
-  if(user.id === id){
-    user.update({ status: 'desativado' });
-  }else{
+  if (user.id === id) {
+    user.update({ status: 'disable' });
+  } else {
     res.status(400).json({
       message: `No es posible eliminar el usuario con el id ${user.id} desde el usuario con el id ${id}`,
       user,
@@ -71,9 +70,9 @@ exports.updateOneUser = async (req, res) => {
 
   const { id } = req.sessionUser;
 
-  if(user.id === id){
+  if (user.id === id) {
     user.update({ name, email });
-  }else{
+  } else {
     res.status(400).json({
       message: `No es posible actualizar el usuario con el id ${user.id} desde el usuario con el id ${id}`,
       user,

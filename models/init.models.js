@@ -6,5 +6,4 @@ const initModel = () => {
     Repair.belongsTo(User);
 }
 
-
 module.exports = initModel;

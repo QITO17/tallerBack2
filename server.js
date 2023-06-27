@@ -2,6 +2,7 @@ const { Model } = require('sequelize');
 const app = require('./app');
 const userRouter = require('./routes/userRouter');
 const repairRouter = require('./routes/repairRouter');
+const AppError = require('./utils/appError');
 
 const PORT = 3000;
 
