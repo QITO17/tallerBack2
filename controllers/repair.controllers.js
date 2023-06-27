@@ -32,11 +32,10 @@ exports.findOneRepairs = async (req, res) => {
   });
 };
 
-exports.createRepairs = catchAsync(async (req, res) => {
+exports.createRepairs = catchAsync(async (req, res, next) => {
   const { date, idUser, descripcion, motorsNumber } = req.body;
   const { id } = req.params;
 
-  console.log('ENTRO2');
   const user = await User.findAll({
     where: {
       idUser,
@@ -64,7 +63,7 @@ exports.createRepairs = catchAsync(async (req, res) => {
   });
 });
 
-exports.completeRepairs = catchAsync(async (req, res) => {
+exports.completeRepairs = catchAsync(async (req, res, next) => {
   const repair = req.repair;
 
   repair.update({ status: 'complete' });
@@ -76,7 +75,7 @@ exports.completeRepairs = catchAsync(async (req, res) => {
   });
 });
 
-exports.cancelleRepairs = catchAsync(async (req, res) => {
+exports.cancelleRepairs = catchAsync(async (req, res, next) => {
   const repair = req.repair;
 
   repair.update({ status: 'cancelled' });
