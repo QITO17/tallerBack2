@@ -1,17 +1,17 @@
 const Repair = require('../models/repairs.model');
 const User = require('../models/user.model');
-const { Op } = require('sequelize');
+const catchAsync = require('../utils/catchAsync');
 
-exports.findRepairs = async (req, res) => {
+exports.findRepairs = async (req, res, next) => {
   const repair = await Repair.findAll({
     where: {
       status: 'pending',
     },
-    include:[
+    include: [
       {
-        model:User,
-      }
-    ]
+        model: User,
+      },
+    ],
   });
 
   if (!repair) {
@@ -32,78 +32,56 @@ exports.findOneRepairs = async (req, res) => {
   });
 };
 
-exports.createRepairs = async (req, res) => {
-  try {
-    const { date, idUser, descripcion, motorsNumber } = req.body;
-    const { id } = req.params;
+exports.createRepairs = catchAsync(async (req, res) => {
+  const { date, idUser, descripcion, motorsNumber } = req.body;
+  const { id } = req.params;
 
-    console.log('ENTRO2');
-    const user = await User.findAll({
-      where: {
-        idUser,
-      },
-    });
-
-    if (id !== user.idUser) {
-      return res.status(404).json({
-        message: 'El id del usuario debe coincidir con un usuario creado ',
-        mesagge2:
-          'We no puedes tener un id de un usuario que no haz creado 😒🙄🙄',
-      });
-    }
-
-    const repair = await Repair.create({
-      date,
+  console.log('ENTRO2');
+  const user = await User.findAll({
+    where: {
       idUser,
-      descripcion,
-      motorsNumber,
-    });
-    console.log('ENTRO1');
-    return res.status(200).json({
-      message: 'Usuario creado exitosamente 😁😀',
-      mesagge2: 'Gracias por escogernos >:D 🚑🛒🚘🏍🛵🚲',
-      repair,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      message: 'Error de servidor 😒😒',
+    },
+  });
+
+  if (id !== user.idUser) {
+    return res.status(404).json({
+      message: 'El id del usuario debe coincidir con un usuario creado ',
+      mesagge2:
+        'We no puedes tener un id de un usuario que no haz creado 😒🙄🙄',
     });
   }
-};
 
-exports.completeRepairs = async (req, res) => {
-  try {
-    const repair = req.repair;
+  const repair = await Repair.create({
+    date,
+    idUser,
+    descripcion,
+    motorsNumber,
+  });
+  return res.status(200).json({
+    message: 'Usuario creado exitosamente 😁😀',
+    mesagge2: 'Gracias por escogernos >:D 🚑🛒🚘🏍🛵🚲',
+    repair,
+  });
+});
 
-    repair.update({ status: 'complete' });
+exports.completeRepairs = catchAsync(async (req, res) => {
+  const repair = req.repair;
 
-    res.status(200).json({
-      message: `Reparación completada exitosamente`,
-      mesagge2: '😎🐱‍🏍🐱‍🐉 Att Arley Hurtado difruta tu moto 🏍🛵🏍',
-      status,
-    });
-  } catch (error) {
-    res.status(404).json({
-      message: `Error el id  no fue identificado`,
-      mesagge2: 'Me estas intentando cargar el servidor? 😤😡',
-    });
-  }
-};
+  repair.update({ status: 'complete' });
 
-exports.cancelleRepairs = async (req, res) => {
-  try {
-    const repair = req.repair;
+  res.status(200).json({
+    message: `Reparación completada exitosamente`,
+    mesagge2: '😎🐱‍🏍🐱‍🐉 Att Arley Hurtado difruta tu moto 🏍🛵🏍',
 
-    repair.update({ status: 'cancelled' });
+  });
+});
 
-    res.status(200).json({
-      message: `Reparación cancelada exitosamente 😒☠☠`,
-      status,
-    });
-  } catch (error) {
-    res.status(404).json({
-      message: `Error el id ${id} no fue identificado 🙄`,
-      mesagge2: 'Me estas intentando cargar el servidor? 😤😡',
-    });
-  }
-};
+exports.cancelleRepairs = catchAsync(async (req, res) => {
+  const repair = req.repair;
+
+  repair.update({ status: 'cancelled' });
+
+  res.status(200).json({
+    message: `Reparación cancelada exitosamente 😒☠☠`,
+  });
+});

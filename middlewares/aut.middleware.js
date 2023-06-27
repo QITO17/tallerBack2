@@ -13,7 +13,7 @@ exports.protect = async (req, res, next) => {
   }
 
   if (!token) {
-    res.status(401).json({
+    return res.status(401).json({
       status: 'Error',
       mesagge: 'No estas logueado porfavor accede',
     });
@@ -32,7 +32,7 @@ exports.protect = async (req, res, next) => {
   });
 
   if (!user) {
-    res.status(401).json({
+   return res.status(401).json({
       status: 'Error',
       mesagge: 'The owner of this token it not longer available',
     });
@@ -45,7 +45,7 @@ exports.protect = async (req, res, next) => {
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.sessionUser.role)) {
-      res.status(403).json({
+      return res.status(403).json({
         status: 'Error',
         mesagge: 'You do not have permission to perfom this action.!',
       });

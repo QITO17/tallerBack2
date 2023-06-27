@@ -1,4 +1,6 @@
 const User = require('../models/user.model');
+const AppError = require('../utils/appError');
+
 
 exports.exisUser = async (req, res, next) => {
   const { id } = req.params;
@@ -10,9 +12,7 @@ exports.exisUser = async (req, res, next) => {
   });
 
   if (!user) {
-    return res.json({
-      mesagge: 'El usuario no pude ser creado 🛠⚒',
-    });
+    return next(new AppError('El usuario no pude ser creado 🛠⚒', 404))
   }
 
   req.user = user;
@@ -30,10 +30,8 @@ exports.existUserEmail = async (req, res, next) => {
   });
 
   if (!user) {
-    return res.status(404).json({
-      status: `Error`,
-      mesagge: `El usuario con el email ${email} no se encontro`,
-    });
+    
+    return next(new AppError('El usuario con el email ${email} no se encontro', 404))
   }
   req.user = user;
   next();

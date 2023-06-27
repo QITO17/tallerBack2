@@ -10,10 +10,7 @@ exports.exisRepair = async (req, res, next) => {
   });
 
   if (!repair) {
-    return res.json({
-      mesagge: 'Usuario cancelado o no existe lo sentimos 🛠⚒',
-      mesagge2: 'Me estas intentando cargar el servidor? 😤😡',
-    });
+    return next(new AppError('Usuario cancelado o no existe lo sentimos 🛠⚒', 404))
   }
 
   req.repair = repair;
