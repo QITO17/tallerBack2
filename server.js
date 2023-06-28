@@ -3,6 +3,9 @@ const app = require('./app');
 const userRouter = require('./routes/userRouter');
 const repairRouter = require('./routes/repairRouter');
 const AppError = require('./utils/appError');
+const { db } = require('./database/conetion');
+const initModel = require('./models/init.models');
+
 
 const PORT = 3000;
 
@@ -23,6 +26,15 @@ app.use((err, req, res, next) => {
   })
 })
 
+db.authenticate()
+  .then((res) => console.log('Autenticada'))
+  .catch((err) => console.log(err));
+
+initModel()
+
+db.sync()
+  .then((res) => console.log('sincronozada'))
+  .catch((err) => console.log(err));
 
 app.listen(PORT, () => {
   console.log('Bienvenido profe Luis 🐱‍👤🐱‍🏍🐱‍🚀🐱‍👓🐱‍💻🐱‍🐉');
